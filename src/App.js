@@ -2,6 +2,9 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import React, { useState } from "react";
 import { UserContext } from "./context/UserContext"
 
+import Cart from './pages/Cart'
+import Checkout from './pages/Checkout'
+
 function App() {
   const [user, setUser] = useState({})
 
