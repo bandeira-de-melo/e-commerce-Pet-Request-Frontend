@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import React, { useState } from "react";
+import { UserContext } from "./context/UserContext"
+
+import Cart from './pages/Cart'
+import Checkout from './pages/Checkout'
 
 function App() {
+  const [user, setUser] = useState({})
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <BrowserRouter>
+      <UserContext.Provider value={{ user, setUser }}>
+        <Routes>
+          {/* <Route path="/" element={<SignIn />} />
+          <Route path="/cadastro" element={<SignUp />} />
+          <Route path="/product" element={<Produto />} />
+          <Route path="/home" element={<Home />} /> */}
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
+        </Routes>
+      </UserContext.Provider>
+    </BrowserRouter>
+  )
 }
 
 export default App;
