@@ -5,9 +5,9 @@ export const Button = styled.button`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 46px;
+  height: 58px;
   border: none;
-  border-radius: 5px;
+  border-radius: 30px;
   background: #A328D6;
   cursor: pointer;
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
