@@ -1,15 +1,52 @@
-import React from "react"
-import { Link } from "react-router-dom"
-// import axios from "axios"
+import React, { useState, useContext } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import axios from "axios"
 
 import styled from "styled-components"
 import { Icon } from '@iconify/react';
+import { Input } from "../components/Input"
 import { Button } from "../components/Button"
-// import { UserContext } from "../context/UserContext"
+import { UserContext } from "../context/UserContext"
 
 export default function Checkout() {
+    const { user } = useContext(UserContext)
 
-    // const navigate = useNavigate()
+    const [cardName, setCardName] = useState("")
+    const [cardNumber, setCardNumber] = useState("")
+    const [expirationDate, setExpirationDate] = useState("")
+    const [cardCVC, setCardCVC] = useState("")
+
+    const navigate = useNavigate("/home")
+
+    const BASE_URL = "http://localhost:5000"
+
+    const token = user
+
+    function handleSubmit(e) {
+        e.preventDefault();
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        const body = {
+            cardName,
+            cardNumber,
+            expirationDate,
+            cardCVC
+        }
+
+        axios.post(`${BASE_URL}/checkout`, body, config)
+            .then((res) => {
+                console.log(res.data);
+                navigate("/home");
+            })
+            .catch((err) => {
+                console.log(err.res.data);
+            })
+    }
 
     return (
         <Container>
@@ -23,7 +60,43 @@ export default function Checkout() {
                 </Link>
             </Header>
             <p>Insira os dados do cartão</p>
-            <Button>Finalizar compra</Button>
+            <Form onSubmit={handleSubmit}>
+                <Input
+                    name="cardName"
+                    type="text"
+                    placeholder="Nome no cartão"
+                    value={cardName}
+                    onChange={e => setCardName(e.target.value)}
+                    required
+                />
+                <Input
+                    name="cardNumber"
+                    type="text"
+                    placeholder="Número do cartão"
+                    value={cardNumber}
+                    onChange={e => setCardNumber(e.target.value)}
+                    required
+                />
+                <div>
+                    <Input
+                        name="expirationDate"
+                        type="text"
+                        placeholder="MM / AA"
+                        value={expirationDate}
+                        onChange={e => setExpirationDate(e.target.value)}
+                        required
+                    />
+                    <Input
+                        name="CVV"
+                        type="text"
+                        placeholder="CVC"
+                        value={cardCVC}
+                        onChange={e => setCardCVC(e.target.value)}
+                        required
+                    />
+                </div>
+                <Button type="submit" >Finalizar compra</Button>
+            </Form>
         </Container>
     )
 }
@@ -67,5 +140,16 @@ const Header = styled.header`
         font-size: 26px;
         line-height: 31px;
         color: #FFFFFF;
+    }
+`
+
+const Form = styled.form`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    div {
+        display: flex;
     }
 `
