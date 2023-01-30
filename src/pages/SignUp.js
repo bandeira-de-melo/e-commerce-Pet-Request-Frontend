@@ -14,7 +14,7 @@ export default function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState('')
 
 
-function register(){
+function register(e){
   e.preventDefault()
 
   const body = { name, email, password, confirmPassword}
