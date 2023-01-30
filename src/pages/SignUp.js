@@ -4,35 +4,52 @@ import { useState } from "react";
 
 
 
-export default function SignUp(){
+export default function SignUp() {
 
-    return(
+  const Navigate = useNavigate()
 
-       <Container>
-         <Logo><p>PetRequest</p></Logo>
-            
-            <ContentSingUp>
-
-         <FormsSignUp>
-            <input placeholder='Nome' required/>
-            <input type='email' placeholder='E-mail' required/>
-            <input type='password' placeholder='Senha' required/>
-            <input type='password' placeholder='Confirme sua senha' required/>
-            <button type='submit'><p>Fazer Cadastro</p></button>
-         </FormsSignUp>
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
 
 
-         <Link to='/' style={{ textDecoration:'none' }}>
-           <LinkSignIn>
-           <p>Já possui uma conta? clique aqui!</p>
-           </LinkSignIn>
+function register(){
+  e.preventDefault()
 
-         </Link>
+  const body = { name, email, password, confirmPassword}
 
-         </ContentSingUp>
+  //continua
+}
 
-       </Container>
-    )
+
+  return (
+
+    <Container>
+      <Logo><p>PetRequest</p></Logo>
+
+      <ContentSingUp>
+
+        <FormsSignUp onSubmit={register}>
+          <input placeholder='Nome' value={name} onChange={(e) => setName(e.target.value)} required />
+          <input type='email' placeholder='E-mail' value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <input type='password' placeholder='Senha' value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <input type='password' placeholder='Confirme sua senha' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+          <button type='submit'><p>Fazer Cadastro</p></button>
+        </FormsSignUp>
+
+
+        <Link to='/' style={{ textDecoration: 'none' }}>
+          <LinkSignIn>
+            <p>Já possui uma conta? clique aqui!</p>
+          </LinkSignIn>
+
+        </Link>
+
+      </ContentSingUp>
+
+    </Container>
+  )
 }
 
 

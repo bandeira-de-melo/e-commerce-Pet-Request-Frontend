@@ -1,10 +1,29 @@
 import styled from "styled-components"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import dog from "../assets/dog.png"
+import { useContext,useState } from "react"
+import AuthContext from '../context/AuthContext'
 
 export default function SignIn() {
 
     const iconeDog = dog
+
+    const Navigate = useNavigate()
+
+
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+
+    const { token, setToken, storageToken, storageName, Auth, name, setName } = useContext(AuthContext)
+
+    function getIn(e){
+       e.preventDefault()
+
+       const body = { email, password }
+
+       //continua
+    }
+
 
     return (
         <>
@@ -19,9 +38,9 @@ export default function SignIn() {
 
                 <ContentLogin>
 
-                    <FormsLogin>
-                        <input type='email' placeholder='E-mail' required/>
-                        <input type='password' placeholder='Senha' required/>
+                    <FormsLogin onSubmit={getIn}>
+                        <input type='email' placeholder='E-mail' value={email} onChange={(e) => setEmail(e.target.value)} required />
+                        <input type='password' placeholder='Senha' value={password} onChange={(e) => setPassword(e.target.value)} required />
                         <button type='submit'><p>Fazer Login</p> </button>
                     </FormsLogin>
 
