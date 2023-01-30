@@ -1,28 +1,44 @@
-import React from "react"
+import React, { useState, useEffect, useContext } from "react"
 import { Link } from "react-router-dom"
 import axios from "axios"
 
 import styled from "styled-components"
 import { Icon } from '@iconify/react';
 import { Button } from "../components/Button"
-// import { UserContext } from "../context/UserContext"
+import { UserContext } from "../context/UserContext"
 
 export default function Cart() {
+    const { user } = useContext(UserContext)
+
     const [cartProducts, setCartProducts] = useState([])
 
     const BASE_URL = "http://localhost:5000"
 
-    async function sumItems() {
+    // const products = [
+    //     { name: "prod 1", value: 25 }, { name: "prod 2", value: 10 }
+    // ]
 
-        axios.get(`${BASE_URL}/cart`)
-            .then((res) => {
-                console.log(res.data);
-                setCartProducts = res.data;
-            })
-            .catch((err) => {
-                console.log(err.response.data);
-            })
-    }
+    const token = user
+    console.log(token)
+
+    useEffect(() => {
+        async function setProducts() {
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+            axios.get(`${BASE_URL}/cart`, config)
+                .then((res) => {
+                    console.log(res.data)
+                    setCartProducts(res.data);
+                })
+                .catch((err) => {
+                    console.log("ERR ", err.response.data);
+                })
+        }
+        setProducts()
+    }, [token])
 
     return (
         <Container>
@@ -35,14 +51,29 @@ export default function Cart() {
                     <Icon icon="mdi:logout" width="34px" color="#FFFFFF" />
                 </Link>
             </Header>
+
             <CartContainer>
-                <Item>Produto</Item>
+                {cartProducts.map((prod) => {
+                    return (
+                        <Item>
+                            <p>{prod.name}</p>
+                            <div>
+                                <p>{prod.value}</p>
+                                <Icon icon="mingcute:minus-circle-line" width="24px" color="#A328D6" />
+                            </div>
+                        </Item>
+                    )
+                })}
             </CartContainer>
+
             <Total>
                 <p>Total</p>
-                <p>{() => sumItems()}</p>
+                <p>{`R$ ${cartProducts.totalValue}`}</p>
             </Total>
-            <Button>Continuar</Button>
+
+            <Link to="/">
+                <Button>Continuar</Button>
+            </Link>
         </Container>
     )
 }
@@ -98,6 +129,23 @@ const CartContainer = styled.div`
 
 const Item = styled.div`
     display: flex;
+    width: 100%;
+    justify-content: space-between;
+    box-sizing: border-box;
+    margin-bottom: 24px;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 23px;
+
+    div {
+        display: flex;
+        min-width: 150px;
+        max-width: 200px;
+    }
+
+    div > p {
+        margin-right: 25px;
+    }
 `
 
 const Total = styled.div`
