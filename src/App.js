@@ -5,6 +5,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
+import AuthContext from "./context/AuthContext";
 
 function App() {
 
