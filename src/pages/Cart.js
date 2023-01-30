@@ -34,7 +34,7 @@ export default function Cart() {
                     setCartProducts(res.data);
                 })
                 .catch((err) => {
-                    console.log("ERR ", err.response.data);
+                    console.log("ERR ", err.res.data);
                 })
         }
         setProducts()

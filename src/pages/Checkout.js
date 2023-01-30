@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
 
@@ -6,9 +6,10 @@ import styled from "styled-components"
 import { Icon } from '@iconify/react';
 import { Input } from "../components/Input"
 import { Button } from "../components/Button"
-// import { UserContext } from "../context/UserContext"
+import { UserContext } from "../context/UserContext"
 
 export default function Checkout() {
+    const { user } = useContext(UserContext)
 
     const [cardName, setCardName] = useState("")
     const [cardNumber, setCardNumber] = useState("")
@@ -19,17 +20,25 @@ export default function Checkout() {
 
     const BASE_URL = "http://localhost:5000"
 
+    const token = user
+
     function handleSubmit(e) {
         e.preventDefault();
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
 
         const body = {
             cardName,
             cardNumber,
             expirationDate,
-            cardCVC,
+            cardCVC
         }
 
-        axios.post(`${BASE_URL}/checkout`, body)
+        axios.post(`${BASE_URL}/checkout`, body, config)
             .then((res) => {
                 console.log(res.data);
                 navigate("/home");
@@ -51,7 +60,7 @@ export default function Checkout() {
                 </Link>
             </Header>
             <p>Insira os dados do cartão</p>
-            <form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit}>
                 <Input
                     name="cardName"
                     type="text"
@@ -87,7 +96,7 @@ export default function Checkout() {
                     />
                 </div>
                 <Button type="submit" >Finalizar compra</Button>
-            </form>
+            </Form>
         </Container>
     )
 }
@@ -131,5 +140,16 @@ const Header = styled.header`
         font-size: 26px;
         line-height: 31px;
         color: #FFFFFF;
+    }
+`
+
+const Form = styled.form`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    div {
+        display: flex;
     }
 `
